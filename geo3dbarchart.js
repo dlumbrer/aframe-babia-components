@@ -160,8 +160,24 @@ function generateBar(size, width, color, positionX, positionZ) {
     entity.setAttribute('color', colors[color]);
     entity.setAttribute('width', width);
     entity.setAttribute('depth', width);
-    entity.setAttribute('height', size);
-    entity.setAttribute('position', { x: positionX, y: size / 2, z: positionZ });
+    //entity.setAttribute('height', size);
+    entity.setAttribute('animation__height', {
+        'property' : 'geometry.height',
+        'from' : 0,
+        'to' : size,
+        'dur' : 2000,
+        'easing' : 'linear'
+    })
+    let position_from = positionX.toString() + ' 0 ' + positionZ.toString()
+    let position_to =  positionX.toString() + ' ' + (size/2).toString() + ' ' + positionZ.toString()
+    //entity.setAttribute('position', { x: positionX, y: size / 2, z: positionZ });
+    entity.setAttribute('animation__position', {
+        'property' : 'position',
+        'from' : position_from,
+        'to' : position_to,
+        'dur': 2000,
+        'easing' : 'linear'
+    })
     return entity;
 }
 

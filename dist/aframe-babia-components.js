@@ -470,8 +470,24 @@ function generateBar(size, width, color, positionX, positionZ) {
     entity.setAttribute('color', colors[color]);
     entity.setAttribute('width', width);
     entity.setAttribute('depth', width);
-    entity.setAttribute('height', size);
-    entity.setAttribute('position', { x: positionX, y: size / 2, z: positionZ });
+    //entity.setAttribute('height', size);
+    entity.setAttribute('animation__height', {
+        'property' : 'geometry.height',
+        'from' : 0,
+        'to' : size,
+        'dur' : 2000,
+        'easing' : 'linear'
+    })
+    let position_from = positionX.toString() + ' 0 ' + positionZ.toString()
+    let position_to =  positionX.toString() + ' ' + (size/2).toString() + ' ' + positionZ.toString()
+    //entity.setAttribute('position', { x: positionX, y: size / 2, z: positionZ });
+    entity.setAttribute('animation__position', {
+        'property' : 'position',
+        'from' : position_from,
+        'to' : position_to,
+        'dur': 2000,
+        'easing' : 'linear'
+    })
     return entity;
 }
 
@@ -810,9 +826,25 @@ let maxRadius
 function generateCylinder(height, radius, color, positionX, positionZ) {
   let entity = document.createElement('a-cylinder');
   entity.setAttribute('color', colors[color]);
-  entity.setAttribute('height', height);
+  entity.setAttribute('animation__height', {
+    'property' : 'geometry.height',
+    'from' : 0,
+    'to' : height,
+    'dur' : 2000,
+    'easing' : 'linear'
+  })
+  //entity.setAttribute('height', height);
   entity.setAttribute('radius', radius);
-  entity.setAttribute('position', { x: positionX, y: height/2, z: positionZ });
+  let position_from = positionX.toString() + ' 0 ' + positionZ.toString()
+  let position_to =  positionX.toString() + ' ' + (height/2).toString() + ' ' + positionZ.toString()
+  //entity.setAttribute('position', { x: positionX, y: height/2, z: positionZ });
+  entity.setAttribute('animation__position', {
+    'property' : 'position',
+    'from' : position_from,
+    'to' : position_to,
+    'dur': 2000,
+    'easing' : 'linear'
+  })
   return entity;
 }
 
@@ -1480,6 +1512,8 @@ AFRAME.registerComponent('codecity', {
         };
 
         this.zone_data = raw_items;
+        console.log('Datos parseados:')
+        console.log(raw_items)
         let zone = new Zone({
             data: this.zone_data,
             extra: function (area) { return area * data.extra; },
@@ -1704,7 +1738,6 @@ AFRAME.registerComponent('buffer-geometry-merger2', {
 //    this.el.setObject3D('mesh', this.mesh);
 //  }
 //});
-
 
 
 
@@ -2663,9 +2696,25 @@ let maxRadius
 function generateCylinder(height, radius, color, position) {
   let entity = document.createElement('a-cylinder');
   entity.setAttribute('color', colors[color]);
-  entity.setAttribute('height', height);
+  entity.setAttribute('animation__height', {
+    'property' : 'geometry.height',
+    'from' : 0,
+    'to' : height,
+    'dur' : 2000,
+    'easing' : 'linear'
+  })
+  //entity.setAttribute('height', height);
   entity.setAttribute('radius', radius);
-  entity.setAttribute('position', { x: position, y: height/2, z: 0 });
+  let position_from = position.toString() + ' 0 0'
+  let position_to = position.toString() + ' ' + (height/2).toString + ' 0'
+  //entity.setAttribute('position', { x: position, y: height/2, z: 0 });
+  entity.setAttribute('animation__position', {
+    'property' : 'position',
+    'from' : position_from,
+    'to' : position_to,
+    'dur': 2000,
+    'easing' : 'linear'
+  })
   return entity;
 }
 
@@ -3130,8 +3179,24 @@ function generateBar(size, width, color, position) {
     entity.setAttribute('color', colors[color]);
     entity.setAttribute('width', width);
     entity.setAttribute('depth', width);
-    entity.setAttribute('height', size);
-    entity.setAttribute('position', { x: position, y: size / 2, z: 0 });
+    //entity.setAttribute('height', size);
+    entity.setAttribute('animation__height', {
+        'property' : 'geometry.height',
+        'from' : 0,
+        'to' : size,
+        'dur' : 2000,
+        'easing' : 'linear'
+    })
+    let position_from = position.toString() + ' 0 0'
+    let position_to = position.toString() + ' ' + (size/2).toString + ' 0'
+    //entity.setAttribute('position', { x: position, y: size / 2, z: 0 });
+    entity.setAttribute('animation__position', {
+        'property' : 'position',
+        'from' : position_from,
+        'to' : position_to,
+        'dur': 2000,
+        'easing' : 'linear'
+    })
     return entity;
 }
 

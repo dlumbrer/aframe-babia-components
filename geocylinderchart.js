@@ -129,9 +129,25 @@ let maxRadius
 function generateCylinder(height, radius, color, position) {
   let entity = document.createElement('a-cylinder');
   entity.setAttribute('color', colors[color]);
-  entity.setAttribute('height', height);
+  entity.setAttribute('animation__height', {
+    'property' : 'geometry.height',
+    'from' : 0,
+    'to' : height,
+    'dur' : 2000,
+    'easing' : 'linear'
+  })
+  //entity.setAttribute('height', height);
   entity.setAttribute('radius', radius);
-  entity.setAttribute('position', { x: position, y: height/2, z: 0 });
+  let position_from = position.toString() + ' 0 0'
+  let position_to = position.toString() + ' ' + (height/2).toString + ' 0'
+  //entity.setAttribute('position', { x: position, y: height/2, z: 0 });
+  entity.setAttribute('animation__position', {
+    'property' : 'position',
+    'from' : position_from,
+    'to' : position_to,
+    'dur': 2000,
+    'easing' : 'linear'
+  })
   return entity;
 }
 
