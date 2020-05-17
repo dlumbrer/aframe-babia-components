@@ -2555,6 +2555,7 @@ let requestJSONDataFromURL = (items) => {
 let time_evolution = false
 let time_evolution_commit_by_commit = false
 let dates = []
+let dateBarEntity
 
 /**
  *  This function generate a plane with date of files
@@ -2580,7 +2581,7 @@ function dateBar(data) {
         }
 
         let entity = document.createElement('a-plane')
-        entity.setAttribute('id', 'date')
+        entity.classList.add('babiaxrDateBar')
         entity.setAttribute('position', { x: -13, y: 10, z: -3 })
         entity.setAttribute('rotation', { x: 0, y: 0, z: 0 })
         entity.setAttribute('color', "white")
@@ -2608,6 +2609,7 @@ function dateBar(data) {
         }
 
         component.appendChild(entity)
+        dateBarEntity = entity
         return date_files
     }
 
@@ -2696,7 +2698,7 @@ function time_evol() {
             if (dates[i + 1].commit_sha) {
                 text += "\n\n Commit: " + dates[i + 1].commit_sha
             }
-            document.getElementById('date').setAttribute('text', 'value', text)
+            dateBarEntity.setAttribute('text', 'value', text)
 
             let changedItems = []
             quarterItems[index].forEach((item) => {
