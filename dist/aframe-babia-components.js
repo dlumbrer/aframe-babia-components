@@ -2546,12 +2546,14 @@ let requestJSONDataFromURL = (items) => {
 
     if (raw_items.time_evolution) {
         time_evolution = true
+        time_evolution_commit_by_commit = raw_items.time_evolution_commit_by_commit
         raw_items = requestJSONDataFromURL(raw_items.init_data)
     }
     return raw_items
 }
 
 let time_evolution = false
+let time_evolution_commit_by_commit = false
 let dates = []
 
 /**
@@ -2586,7 +2588,10 @@ function dateBar(data) {
         entity.setAttribute('width', 2)
         entity.setAttribute('scale', { x: 3, y: 3, z: 1 })
 
-        let text = new Date(date_files[0].date * 1000).toLocaleDateString()
+        let text = "Date: " + new Date(date_files[0].date * 1000).toLocaleDateString()
+        if (date_files[0].commit_sha) {
+            text += "\n\n Commit: " + date_files[0].commit_sha
+        }
         entity.setAttribute('text', {
             'value': text,
             'align': 'center',
@@ -2595,8 +2600,11 @@ function dateBar(data) {
         })
         // Create point
         for (let data in date_files) {
-            let date = new Date(date_files[data].date * 1000)
-            dates.push(date.toLocaleDateString())
+            let date = { date: new Date(date_files[data].date * 1000).toLocaleDateString() }
+            if (date_files[data].commit_sha) {
+                date.commit_sha = date_files[data].commit_sha
+            }
+            dates.push(date)
         }
 
         component.appendChild(entity)
@@ -2684,7 +2692,10 @@ function time_evol() {
             console.log("Loop number", i)
 
             // Change Date
-            let text = dates[i + 1]
+            let text = "Date: " + dates[i + 1].date
+            if (dates[i + 1].commit_sha) {
+                text += "\n\n Commit: " + dates[i + 1].commit_sha
+            }
             document.getElementById('date').setAttribute('text', 'value', text)
 
             let changedItems = []
@@ -2731,13 +2742,15 @@ function time_evol() {
             })
 
             // Put height 0 those that not exists
-            initItems.forEach((item) => {
-                if (!changedItems.includes(item.id)) {
-                    let prevPos = document.getElementById(item.id).getAttribute("position")
-                    document.getElementById(item.id).setAttribute("geometry", "height", -0.1)
-                    document.getElementById(item.id).setAttribute("position", { x: prevPos.x, y: 0, z: prevPos.z })
-                }
-            })
+            if (!time_evolution_commit_by_commit) {
+                initItems.forEach((item) => {
+                    if (!changedItems.includes(item.id)) {
+                        let prevPos = document.getElementById(item.id).getAttribute("position")
+                        document.getElementById(item.id).setAttribute("geometry", "height", -0.1)
+                        document.getElementById(item.id).setAttribute("position", { x: prevPos.x, y: 0, z: prevPos.z })
+                    }
+                })
+            }
 
             index++
             if (index > maxFiles - 1) {
